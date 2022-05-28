@@ -1,0 +1,42 @@
+.form-wrap {
+  height: 80px;
+  background-image:linear-gradient(to right,
+      #5adaee,
+      #2b21e8);
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+}
+form {
+  width: fit-content;
+  margin: 0 auto;
+
+  
+}
+
+.input-wrap{
+  position: relative;
+  input {
+      height: 30px;
+      border-radius: 15px;
+      border-color: transparent;
+      padding-left: 30px;
+      width: 320px;
+    }
+
+    button {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 30px;
+      border-radius: 15px;
+      border-color: transparent;
+      background-color: rgb(217, 220, 220);
+      width: 80px;
+      &:hover{
+        background-color: rgb(157, 159, 159);
+        color: #fff;
+
+      }
+    }
+}
