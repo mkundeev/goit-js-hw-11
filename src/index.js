@@ -1,18 +1,28 @@
-import galleryTemplate from './templates/gallery'
+import galleryTemplate from './templates/gallery.hbs'
+import Notiflix from 'notiflix'; 
+import NewApi from './js/searchApi.js';
 
 const refs = {
     form: document.querySelector("#search-form"),
     gallery: document.querySelector('.gallery'), 
 }
+const newApi = new NewApi(); 
+refs.form.addEventListener('submit', search)
 
-refs.form.addEventListener('submit', searchItem)
 
-function searchItem(event) {
+function search(event) {
     event.preventDefault()
-    const  searchedItem= refs.form.elements.searchQuery.value
+    const searchedItem = refs.form.elements.searchQuery.value
+    newApi.searchName = searchedItem;
+    newApi.searchItem().then(data => {
+        console.log(data.hits)
+        createGallery(data.hits)
+    }).catch(error => Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again."))
     
 }
 
 function createGallery(data) {
-gallery.innerHtml = galleryTemplate(data)
+    refs.gallery.insertAdjacentHTML('afterbegin', galleryTemplate(data))
+    
+    
 }
