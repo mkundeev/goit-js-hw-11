@@ -1,3 +1,5 @@
+const API_KEY = '27704897-33eca0a5ea9474d62773139fd';
+const axios = require('axios').default;
 export default class NewApi  {
   constructor() {
     this.name = '';
@@ -5,30 +7,28 @@ export default class NewApi  {
     this.total = 0;
     
   }
-  // API_KEY: '27704897-33eca0a5ea9474d62773139fd',
-  searchItem() {
+  
+  async searchItem() {
+   try{
+      const response = await axios.get(`https://pixabay.com/api/?key=${API_KEY}&q=${this.name}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`)
+      this.page += 1;
+      return response.data}
+   catch (error) {
+    console.log(error.message);
+  }
 
-    return fetch(`https://pixabay.com/api/?key=27704897-33eca0a5ea9474d62773139fd&q=${this.name}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error')
-        }
-        return response.json();
-      })
   }
   
   set searchName(name) {
     this.name = name;
   }
-  increasePage() {
-    this.page += 1;
-  }
+ 
   resetPage(){
     this.page = 1;
   }
 
   set totalImages(number) {
-    this.total = number
+    this.total = number-40
   }
   decreaseTotalImages() {
     this.total-=40

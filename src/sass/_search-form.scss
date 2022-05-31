@@ -65,7 +65,7 @@ form {
     background-color: rgb(217, 220, 220);
     margin: 0 auto;
     padding-left: 15px;
-    padding-right: 15px;
+    padding-right: 35px;
     display: block;
     margin-bottom: 50px;
     &.is-hidden {
@@ -76,4 +76,7 @@ form {
         background-color: rgb(157, 159, 159);
         color: #fff;
       }
+    i.is-hidden{
+      opacity: 0;
+    }
 }
