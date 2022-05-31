@@ -38,7 +38,6 @@ form {
       &:hover{
         background-color: rgb(157, 159, 159);
         color: #fff;
-
       }
     }
     i{
@@ -58,4 +57,23 @@ form {
           }
       }
     
+}
+.load-more {
+    height: 30px;
+    border-radius: 15px;
+    border-color: transparent;
+    background-color: rgb(217, 220, 220);
+    margin: 0 auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    display: block;
+    margin-bottom: 50px;
+    &.is-hidden {
+        display: none;
+      }
+    
+    &:hover {
+        background-color: rgb(157, 159, 159);
+        color: #fff;
+      }
 }

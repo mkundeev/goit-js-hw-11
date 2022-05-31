@@ -1,12 +1,13 @@
 export default class NewApi  {
-  // API_KEY: '27704897-33eca0a5ea9474d62773139fd',
-
-
   constructor() {
     this.name = '';
+    this.page = 1;
+    
   }
+  // API_KEY: '27704897-33eca0a5ea9474d62773139fd',
   searchItem() {
-    return fetch(`https://pixabay.com/api/?key=27704897-33eca0a5ea9474d62773139fd&q=${this.name}&image_type=photo&orientation=horizontal&safesearch=true`)
+
+    return fetch(`https://pixabay.com/api/?key=27704897-33eca0a5ea9474d62773139fd&q=${this.name}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Error')
@@ -17,6 +18,12 @@ export default class NewApi  {
   
   set searchName(name) {
     this.name = name;
+  }
+  increasePage() {
+    this.page += 1;
+  }
+  resetPage(){
+    this.page = 1;
   }
   
 }
