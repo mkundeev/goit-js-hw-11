@@ -2,6 +2,7 @@ export default class NewApi  {
   constructor() {
     this.name = '';
     this.page = 1;
+    this.total = 0;
     
   }
   // API_KEY: '27704897-33eca0a5ea9474d62773139fd',
@@ -24,6 +25,13 @@ export default class NewApi  {
   }
   resetPage(){
     this.page = 1;
+  }
+
+  set totalImages(number) {
+    this.total = number
+  }
+  decreaseTotalImages() {
+    this.total-=40
   }
   
 }
