@@ -33,11 +33,13 @@ function search(event) {
     newApi.searchName = refs.form.elements.searchQuery.value.trim();
     if (refs.form.elements.searchQuery.value.trim() === '') {
         Notiflix.Notify.failure("Please enter search request")
+        loadBtnStatus.unsearching()
         return
     }
     newApi.searchItem().then(({ hits, totalHits }) => {  
         if (hits.length === 0) {
             Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
+            loadBtnStatus.unsearching()
             return
         }
         Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
@@ -69,15 +71,7 @@ function createGallery(data) {
     
 }
 
-function smoothScroll() {
-        const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
-    console.log(document.querySelector(".gallery").firstElementChild.getBoundingClientRect())
 
-window.scrollBy({
-  top: cardHeight * 3,
-  behavior: "smooth",
-});
-}
 
 function cleanGallery() {
     refs.gallery.innerHTML = '';
@@ -88,5 +82,11 @@ function checkEndOfSearch() {
             loadBtnStatus.hidden()
         }
 }
-
+function smoothScroll() {
+    const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
+    window.scrollBy({
+    top: cardHeight * 3,
+    behavior: "smooth",
+    });
+}
 
