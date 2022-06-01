@@ -21,7 +21,7 @@ const loadBtnStatus = new LoadBtns('i','svg','.load-more')
 refs.form.addEventListener('submit', search);
 refs.loadMoreBtn.addEventListener('click', loadMore);
 
-function search(event) {
+async function search(event) {
     event.preventDefault()
     loadBtnStatus.hidden()
     loadBtnStatus.searching()
@@ -33,38 +33,51 @@ function search(event) {
         loadBtnStatus.unsearching()
         return
     }
-    newApi.searchItem().then(({ hits, totalHits }) => {  
-        if (hits.length === 0) {
-            Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
-            loadBtnStatus.unsearching()
-            return
-        }
-        Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
-        newApi.totalImages = totalHits;
-        loadBtnStatus.shown()
-        
-        createGallery(hits)
-        gallery.refresh()
-        checkEndOfSearch()
+    try{
+    const searchResult = await newApi.searchItem()
+    const readyGallery = await drawGallery(searchResult)
+    } catch (error) {
+        console.log(error.message);
+      }
+}
+
+async function drawGallery({ hits, totalHits }) {  
+    if (hits.length === 0) {
+        Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
         loadBtnStatus.unsearching()
-    }).catch(error => Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again."))
+        return
+    }
+    Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
+    newApi.totalImages = totalHits;
+    loadBtnStatus.shown()
+    drawSearchResult(hits)
+}
+
+async function addGallery({ hits }) {
+    smoothScroll()
+    drawSearchResult(hits)
     
 }
 
-function loadMore(event) {
+
+async function loadMore(event) {
     newApi.increasePage()
     loadBtnStatus.searching()
     newApi.decreaseTotalImages()
-    newApi.searchItem().then(({ hits }) => {
-        smoothScroll()
-
-        createGallery(hits)
-        gallery.refresh()
-        checkEndOfSearch() 
-        loadBtnStatus.unsearching()
-    }).catch(error => Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again."))
+    try{
+        const searchResult = await newApi.searchItem()
+        const loadGallery = await addGallery(searchResult)
+    } catch (error) {
+        console.log(error.message);
+    }
 }
 
+function drawSearchResult(results){
+    createGallery(results)
+    gallery.refresh()
+    checkEndOfSearch() 
+    loadBtnStatus.unsearching()
+}
 
 function createGallery(data) {
     refs.gallery.insertAdjacentHTML('beforeend', galleryTemplate(data))
