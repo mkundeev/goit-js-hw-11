@@ -11,7 +11,6 @@ export default class NewApi  {
   async searchItem() {
    try{
       const response = await axios.get(`https://pixabay.com/api/?key=${API_KEY}&q=${this.name}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`)
-      this.page += 1;
       return response.data}
    catch (error) {
     console.log(error.message);
@@ -22,7 +21,10 @@ export default class NewApi  {
   set searchName(name) {
     this.name = name;
   }
- 
+  increasePage() {
+    this.page += 1;
+  }
+
   resetPage(){
     this.page = 1;
   }

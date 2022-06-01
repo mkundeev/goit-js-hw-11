@@ -13,16 +13,13 @@ const refs = {
      
 }
 
-let gallery;
+
 const newApi = new NewApi();
+const gallery = new SimpleLightbox('.gallery__item')
 const loadBtnStatus = new LoadBtns('i','svg','.load-more')
 
 refs.form.addEventListener('submit', search);
 refs.loadMoreBtn.addEventListener('click', loadMore);
-
-
-
-
 
 function search(event) {
     event.preventDefault()
@@ -44,21 +41,24 @@ function search(event) {
         }
         Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
         newApi.totalImages = totalHits;
-        createGallery(hits)
-        gallery = new SimpleLightbox('.gallery__item')
-        checkEndOfSearch()
         loadBtnStatus.shown()
+        
+        createGallery(hits)
+        gallery.refresh()
+        checkEndOfSearch()
         loadBtnStatus.unsearching()
     }).catch(error => Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again."))
     
 }
 
 function loadMore(event) {
+    newApi.increasePage()
     loadBtnStatus.searching()
     newApi.decreaseTotalImages()
     newApi.searchItem().then(({ hits }) => {
-        createGallery(hits)
         smoothScroll()
+
+        createGallery(hits)
         gallery.refresh()
         checkEndOfSearch() 
         loadBtnStatus.unsearching()
@@ -70,8 +70,6 @@ function createGallery(data) {
     refs.gallery.insertAdjacentHTML('beforeend', galleryTemplate(data))
     
 }
-
-
 
 function cleanGallery() {
     refs.gallery.innerHTML = '';
