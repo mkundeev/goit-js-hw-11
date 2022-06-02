@@ -9,8 +9,9 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 const refs = {
     form: document.querySelector("#search-form"),
     gallery: document.querySelector('.gallery'),
-    loadMoreBtn: document.querySelector('.load-more')
-     
+    loadMoreBtn: document.querySelector('.load-more'),
+    scrollChekbox: document.querySelector('#scroll'),
+    footer: document.querySelector(".footer"),
 }
 
 
@@ -20,6 +21,7 @@ const loadBtnStatus = new LoadBtns('i','svg','.load-more')
 
 refs.form.addEventListener('submit', search);
 refs.loadMoreBtn.addEventListener('click', loadMore);
+refs.scrollChekbox.addEventListener('click', infinityScrollOn);
 
 async function search(event) {
     event.preventDefault()
@@ -61,15 +63,17 @@ async function addGallery({ hits }) {
 
 
 async function loadMore(event) {
-    newApi.increasePage()
     loadBtnStatus.searching()
+    newApi.increasePage()
     newApi.decreaseTotalImages()
-    try{
+    try {
+        
         const searchResult = await newApi.searchItem()
         const loadGallery = await addGallery(searchResult)
+        
     } catch (error) {
         console.log(error.message);
-    }
+    }   
 }
 
 function drawSearchResult(results){
@@ -93,6 +97,8 @@ function checkEndOfSearch() {
             loadBtnStatus.hidden()
         }
 }
+
+
 function smoothScroll() {
     const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
     window.scrollBy({
@@ -100,4 +106,24 @@ function smoothScroll() {
     behavior: "smooth",
     });
 }
+
+// ======================================================
+function infinityScrollOn() {
+    if (refs.scrollChekbox.checked) {
+        loadBtnStatus.hidden()
+        observer.observe(refs.footer)
+    } else {
+        loadBtnStatus.shown()
+        observer.disconnect(refs.footer)
+    }
+}
+
+const options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 1.0,
+}
+
+const observer = new IntersectionObserver(loadMore, options);
+
 

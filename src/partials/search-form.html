@@ -1,15 +1,25 @@
 
 <div class="form-wrap">
   <form class="search-form" id="search-form">
-  <div class="input-wrap">
-  <i class="fa fa-spinner fa-spin is-hidden"></i>
-  <svg width="15" height="15">
-    <use href="./images/symbol-defs.svg#icon-search"></use>
-  </svg>
-  <input type="text" name="searchQuery" autocomplete="off" placeholder="Search images..." />
-  <button type="submit">Search</button>
-  </div>
-</form>
+    <div class="menu-wrap">
+      
+      <div class="scroll-selector">
+        <input type="checkbox" name="scroll" id="scroll" /><span>Infinitty-scroll</span>
+      </div>
+      <div class="input-wrap">
+        <i class="fa fa-spinner fa-spin is-hidden"></i>
+        <svg width="15" height="15">
+          <use href="./images/symbol-defs.svg#icon-search"></use>
+        </svg>
+        <input type="text" name="searchQuery" autocomplete="off" placeholder="Search images..." />
+        <button type="submit">Search</button>
+      </div>
+    </div>
+    
+    
+
+  </form>
 </div>
 <div class="gallery"></div>
-<button type="button" class="load-more is-hidden"><i class="fa fa-spinner fa-spin is-hidden"></i> Load more</button>
+<button type="button" class="load-more is-cheked"><i class="fa fa-spinner fa-spin is-hidden"></i> Load more</button>
+<div class="footer"></div>

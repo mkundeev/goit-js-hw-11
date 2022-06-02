@@ -3,19 +3,17 @@
   background-image:linear-gradient(to right,
       #5adaee,
       #2b21e8);
-  padding-top: 20px;
-  padding-bottom: 20px;
+ padding: 20px;
 
 }
 form {
   width: fit-content;
-  margin: 0 auto;
-
-  
+ 
 }
 
 .input-wrap{
   position: relative;
+  margin-left: 50%;
   input {
       height: 30px;
       border-radius: 15px;
@@ -68,9 +66,9 @@ form {
     padding-right: 35px;
     display: block;
     margin-bottom: 50px;
-    &.is-hidden {
-        display: none;
-      }
+    &.is-cheked {
+      display: none;
+    }
     
     &:hover {
         background-color: rgb(157, 159, 159);
@@ -79,4 +77,24 @@ form {
     i.is-hidden{
       opacity: 0;
     }
+}
+.menu-wrap{
+  display: flex;
+}
+
+.scroll-selector{
+  display: block;
+  height: 30px;
+  background-color: white;
+  border-radius: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: fit-content;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  
+  input{
+    margin-right: 5px;
+  }
 }
