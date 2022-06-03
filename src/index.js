@@ -60,7 +60,7 @@ async function drawGallery({ hits, totalHits }) {
     }
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
     newApi.totalImages = totalHits;
-    console.log(newApi.total);
+    // console.log(newApi.total);
     drawSearchResult(hits)
     loadBtnStatus.shown()
 }
@@ -76,7 +76,7 @@ async function loadMore(event) {
     loadBtnStatus.searching()
     newApi.increasePage()
     newApi.decreaseTotalImages()
-    console.log(newApi.total)
+    // console.log(newApi.total)
     try {
         
         const searchResult = await newApi.searchItem()
