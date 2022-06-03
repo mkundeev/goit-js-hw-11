@@ -36,7 +36,7 @@ async function search(event) {
         return
     }
     infinityScrollOn()
-    refs.scrollChekbox.disabled = true;
+    
     try{
     const searchResult = await newApi.searchItem()
     const readyGallery = await drawGallery(searchResult)
@@ -93,12 +93,11 @@ function cleanGallery() {
     refs.gallery.innerHTML = '';
 }
 function checkEndOfSearch() {
-    console.log(newApi.total)
+    // console.log(newApi.total)
      if (newApi.total < 0) {
             Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
          loadBtnStatus.hidden()
          observer.disconnect(refs.footer)
-         refs.scrollChekbox.disabled = false;
         }
 }
 
