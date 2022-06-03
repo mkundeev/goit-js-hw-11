@@ -30,10 +30,9 @@ export default class NewApi  {
   }
 
   set totalImages(number) {
-    this.total = number-40
+    this.total = number - 40;
   }
   decreaseTotalImages() {
-    this.total-=40
+    this.total -= 40;
   }
-  
-}
+

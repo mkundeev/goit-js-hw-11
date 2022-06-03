@@ -13,11 +13,16 @@ const refs = {
     scrollChekbox: document.querySelector('#scroll'),
     footer: document.querySelector(".footer"),
 }
-
+const options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 1.0,
+}
 
 const newApi = new NewApi();
-const gallery = new SimpleLightbox('.gallery__item')
-const loadBtnStatus = new LoadBtns('i','svg','.load-more')
+const gallery = new SimpleLightbox('.gallery__item');
+const loadBtnStatus = new LoadBtns('i', 'svg', '.load-more');
+const observer = new IntersectionObserver(loadMore, options);
 
 refs.form.addEventListener('submit', search);
 refs.loadMoreBtn.addEventListener('click', loadMore);
@@ -25,6 +30,7 @@ refs.loadMoreBtn.addEventListener('click', loadMore);
 
 async function search(event) {
     event.preventDefault()
+    
     loadBtnStatus.hidden()
     loadBtnStatus.searching()
     cleanGallery()
@@ -39,7 +45,8 @@ async function search(event) {
     
     try{
     const searchResult = await newApi.searchItem()
-    const readyGallery = await drawGallery(searchResult)
+        const readyGallery = await drawGallery(searchResult)
+        smoothScroll()
     } catch (error) {
         console.log(error.message);
       }
@@ -53,13 +60,15 @@ async function drawGallery({ hits, totalHits }) {
     }
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
     newApi.totalImages = totalHits;
-    loadBtnStatus.shown()
+    console.log(newApi.total);
     drawSearchResult(hits)
+    loadBtnStatus.shown()
 }
 
 async function addGallery({ hits }) {
-    smoothScroll()
+    
     drawSearchResult(hits)
+    smoothScroll()
     
 }
 
@@ -67,6 +76,7 @@ async function loadMore(event) {
     loadBtnStatus.searching()
     newApi.increasePage()
     newApi.decreaseTotalImages()
+    console.log(newApi.total)
     try {
         
         const searchResult = await newApi.searchItem()
@@ -93,7 +103,7 @@ function cleanGallery() {
     refs.gallery.innerHTML = '';
 }
 function checkEndOfSearch() {
-    // console.log(newApi.total)
+   
      if (newApi.total < 0) {
             Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
          loadBtnStatus.hidden()
@@ -105,7 +115,7 @@ function checkEndOfSearch() {
 function smoothScroll() {
     const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
     window.scrollBy({
-    top: cardHeight * 2,
+    top: cardHeight * 3,
     behavior: "smooth",
     });
 }
@@ -122,12 +132,8 @@ function infinityScrollOn() {
 }
 
 
-const options = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 1.0,
-}
 
-const observer = new IntersectionObserver(loadMore, options);
+
+
 
 
