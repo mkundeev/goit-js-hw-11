@@ -21,7 +21,7 @@ const loadBtnStatus = new LoadBtns('i','svg','.load-more')
 
 refs.form.addEventListener('submit', search);
 refs.loadMoreBtn.addEventListener('click', loadMore);
-refs.scrollChekbox.addEventListener('click', infinityScrollOn);
+
 
 async function search(event) {
     event.preventDefault()
@@ -35,6 +35,8 @@ async function search(event) {
         loadBtnStatus.unsearching()
         return
     }
+    infinityScrollOn()
+    refs.scrollChekbox.disabled = true;
     try{
     const searchResult = await newApi.searchItem()
     const readyGallery = await drawGallery(searchResult)
@@ -60,7 +62,6 @@ async function addGallery({ hits }) {
     drawSearchResult(hits)
     
 }
-
 
 async function loadMore(event) {
     loadBtnStatus.searching()
@@ -92,9 +93,12 @@ function cleanGallery() {
     refs.gallery.innerHTML = '';
 }
 function checkEndOfSearch() {
+    console.log(newApi.total)
      if (newApi.total < 0) {
             Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
-            loadBtnStatus.hidden()
+         loadBtnStatus.hidden()
+         observer.disconnect(refs.footer)
+         refs.scrollChekbox.disabled = false;
         }
 }
 
@@ -102,7 +106,7 @@ function checkEndOfSearch() {
 function smoothScroll() {
     const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
     window.scrollBy({
-    top: cardHeight * 3,
+    top: cardHeight * 2,
     behavior: "smooth",
     });
 }
@@ -110,13 +114,14 @@ function smoothScroll() {
 // ======================================================
 function infinityScrollOn() {
     if (refs.scrollChekbox.checked) {
-        loadBtnStatus.hidden()
+        refs.loadMoreBtn.classList.add('is-hidden')
         observer.observe(refs.footer)
     } else {
-        loadBtnStatus.shown()
+        refs.loadMoreBtn.classList.remove('is-hidden')
         observer.disconnect(refs.footer)
     }
 }
+
 
 const options = {
     root: null,

@@ -65,9 +65,12 @@ form {
     padding-left: 15px;
     padding-right: 35px;
     display: block;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     &.is-cheked {
       display: none;
+    }
+    &.is-hidden{
+      opacity: 0
     }
     
     &:hover {
