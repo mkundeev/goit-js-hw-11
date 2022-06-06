@@ -23,4 +23,7 @@
 }
 .footer{
     height: 10px;
+    &.is-cheked {
+            display: none;
+        }
 }

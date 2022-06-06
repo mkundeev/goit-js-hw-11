@@ -22,15 +22,15 @@ const options = {
 const newApi = new NewApi();
 const gallery = new SimpleLightbox('.gallery__item');
 const loadBtnStatus = new LoadBtns('i', 'svg', '.load-more');
-const observer = new IntersectionObserver(loadMore, options);
+const observer = new IntersectionObserver(loadMoreOnScroll, options);
 
 refs.form.addEventListener('submit', search);
 refs.loadMoreBtn.addEventListener('click', loadMore);
-
+refs.scrollChekbox.addEventListener('change', infinityScrollOn);
 
 async function search(event) {
     event.preventDefault()
-    
+    observer.observe(refs.footer)
     loadBtnStatus.hidden()
     loadBtnStatus.searching()
     cleanGallery()
@@ -41,7 +41,7 @@ async function search(event) {
         loadBtnStatus.unsearching()
         return
     }
-    infinityScrollOn()
+    // infinityScrollOn()
     
     try{
     const searchResult = await newApi.searchItem()
@@ -76,7 +76,7 @@ async function loadMore(event) {
     loadBtnStatus.searching()
     newApi.increasePage()
     newApi.decreaseTotalImages()
-    // console.log(newApi.total)
+    console.log(newApi.total)
     try {
         
         const searchResult = await newApi.searchItem()
@@ -85,6 +85,13 @@ async function loadMore(event) {
     } catch (error) {
         console.log(error.message);
     }   
+}
+
+function loadMoreOnScroll() {
+    if (refs.form.elements.searchQuery.value.trim() === '') {
+        return
+    }
+    loadMore()
 }
 
 function drawSearchResult(results){
@@ -122,13 +129,7 @@ function smoothScroll() {
 
 // ======================================================
 function infinityScrollOn() {
-    if (refs.scrollChekbox.checked) {
-        refs.loadMoreBtn.classList.add('is-hidden')
-        observer.observe(refs.footer)
-    } else {
-        refs.loadMoreBtn.classList.remove('is-hidden')
-        observer.disconnect(refs.footer)
-    }
+  refs.footer.classList.toggle('is-cheked')
 }
 
 

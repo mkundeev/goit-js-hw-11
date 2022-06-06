@@ -1,6 +1,6 @@
 const API_KEY = '27704897-33eca0a5ea9474d62773139fd';
 const axios = require('axios').default;
-export default class NewApi  {
+export default class NewApi {
   constructor() {
     this.name = '';
     this.page = 1;
@@ -9,12 +9,13 @@ export default class NewApi  {
   }
   
   async searchItem() {
-   try{
+    try {
       const response = await axios.get(`https://pixabay.com/api/?key=${API_KEY}&q=${this.name}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`)
-      return response.data}
-   catch (error) {
-    console.log(error.message);
-  }
+      return response.data
+    }
+    catch (error) {
+      console.log(error.message);
+    }
 
   }
   
@@ -25,7 +26,7 @@ export default class NewApi  {
     this.page += 1;
   }
 
-  resetPage(){
+  resetPage() {
     this.page = 1;
   }
 
@@ -35,4 +36,4 @@ export default class NewApi  {
   decreaseTotalImages() {
     this.total -= 40;
   }
-
+}

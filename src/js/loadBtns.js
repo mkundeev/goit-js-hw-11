@@ -9,10 +9,10 @@ export default class LoadBtns  {
   
 
   hidden() {
-    this.button.classList.add('is-cheked')
+    this.button.classList.add('is-hidden')
   }
   shown() {
-    this.button.classList.remove('is-cheked')
+    this.button.classList.remove('is-hidden')
   }
   searching() {
     this.spiner.forEach(elem=>elem.classList.remove('is-hidden'))
