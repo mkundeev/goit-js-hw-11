@@ -14,7 +14,6 @@ const refs = {
     footer: document.querySelector(".footer"),
 }
 const options = {
-    delay: 300,
     root: null,
     rootMargin: '0px',
     threshold: 1.0,
@@ -23,29 +22,29 @@ const options = {
 const newApi = new NewApi();
 const gallery = new SimpleLightbox('.gallery__item');
 const loadBtnStatus = new LoadBtns('i', 'svg', '.load-more');
-const observer = new IntersectionObserver(loadMore, options);
-console.log(observer)
+const observer = new IntersectionObserver(loadMoreOnScroll, options);
 
 refs.form.addEventListener('submit', search);
 refs.loadMoreBtn.addEventListener('click', loadMore);
 refs.scrollChekbox.addEventListener('change', infinityScrollOn);
 
 async function search(event) {
-    console.log("search")
+    
     event.preventDefault()
+    newApi.searchName = refs.form.elements.searchQuery.value.trim();
+    if (refs.form.elements.searchQuery.value.trim() === '') {
+        Notiflix.Notify.failure("Please enter search request")
+        loadBtnStatus.unsearching()
+        console.log(1)
+        return
+    }
     observer.observe(refs.footer)
     loadBtnStatus.hidden()
     loadBtnStatus.searching()
     cleanGallery()
     newApi.resetPage()
-    newApi.searchName = refs.form.elements.searchQuery.value.trim();
-    if (refs.form.elements.searchQuery.value.trim() === '') {
-        Notiflix.Notify.failure("Please enter search request")
-        loadBtnStatus.unsearching()
-        return
-    }
-    // infinityScrollOn()
     
+
     try{
     const searchResult = await newApi.searchItem()
         const readyGallery = await drawGallery(searchResult)
@@ -55,6 +54,8 @@ async function search(event) {
       }
 }
 
+
+
 async function drawGallery({ hits, totalHits }) {  
     if (hits.length === 0) {
         Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
@@ -63,7 +64,7 @@ async function drawGallery({ hits, totalHits }) {
     }
     Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
     newApi.totalImages = totalHits;
-    // console.log(newApi.total);
+    
     drawSearchResult(hits)
     loadBtnStatus.shown()
 }
@@ -89,6 +90,13 @@ async function loadMore(event) {
     } catch (error) {
         console.log(error.message);
     }   
+}
+
+async function loadMoreOnScroll(entries, observer) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+        loadMore()
+    } })
 }
 
 
@@ -130,6 +138,8 @@ function smoothScroll() {
 // ======================================================
 function infinityScrollOn() {
     refs.footer.classList.toggle('is-cheked')
+    if (refs.gallery.innerHTML)
+
     refs.footer.classList.contains('is-cheked') ? loadBtnStatus.shown(): loadBtnStatus.hidden()
 }
 

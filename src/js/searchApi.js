@@ -5,12 +5,22 @@ export default class NewApi {
     this.name = '';
     this.page = 1;
     this.total = 0;
+    this.options = new URLSearchParams({
+      key: API_KEY,
+      q: this.name,
+      image_type: 'photo',
+      orientation: 'horizontal',
+      safesearch: true,
+      per_page: 40,
+      page: this.page
+    })
     
   }
   
   async searchItem() {
+    
     try {
-      const response = await axios.get(`https://pixabay.com/api/?key=${API_KEY}&q=${this.name}&image_type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${this.page}`)
+      const response = await axios.get(`https://pixabay.com/api/?${this.options}`)
       return response.data
     }
     catch (error) {
