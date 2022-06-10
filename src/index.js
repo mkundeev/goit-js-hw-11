@@ -14,6 +14,7 @@ const refs = {
     footer: document.querySelector(".footer"),
 }
 const options = {
+    delay: 300,
     root: null,
     rootMargin: '0px',
     threshold: 1.0,
@@ -22,13 +23,15 @@ const options = {
 const newApi = new NewApi();
 const gallery = new SimpleLightbox('.gallery__item');
 const loadBtnStatus = new LoadBtns('i', 'svg', '.load-more');
-const observer = new IntersectionObserver(loadMoreOnScroll, options);
+const observer = new IntersectionObserver(loadMore, options);
+console.log(observer)
 
 refs.form.addEventListener('submit', search);
 refs.loadMoreBtn.addEventListener('click', loadMore);
 refs.scrollChekbox.addEventListener('change', infinityScrollOn);
 
 async function search(event) {
+    console.log("search")
     event.preventDefault()
     observer.observe(refs.footer)
     loadBtnStatus.hidden()
@@ -73,10 +76,11 @@ async function addGallery({ hits }) {
 }
 
 async function loadMore(event) {
+    console.log(1)
     loadBtnStatus.searching()
     newApi.increasePage()
     newApi.decreaseTotalImages()
-    console.log(newApi.total)
+    
     try {
         
         const searchResult = await newApi.searchItem()
@@ -87,12 +91,7 @@ async function loadMore(event) {
     }   
 }
 
-function loadMoreOnScroll() {
-    if (refs.form.elements.searchQuery.value.trim() === '') {
-        return
-    }
-    loadMore()
-}
+
 
 function drawSearchResult(results){
     createGallery(results)
@@ -110,11 +109,12 @@ function cleanGallery() {
     refs.gallery.innerHTML = '';
 }
 function checkEndOfSearch() {
-   
+   console.log(newApi.total)
      if (newApi.total < 0) {
             Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.")
          loadBtnStatus.hidden()
          observer.disconnect(refs.footer)
+         return
         }
 }
 
@@ -129,7 +129,8 @@ function smoothScroll() {
 
 // ======================================================
 function infinityScrollOn() {
-  refs.footer.classList.toggle('is-cheked')
+    refs.footer.classList.toggle('is-cheked')
+    refs.footer.classList.contains('is-cheked') ? loadBtnStatus.shown(): loadBtnStatus.hidden()
 }
 
 
