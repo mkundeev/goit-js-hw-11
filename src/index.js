@@ -77,7 +77,7 @@ async function addGallery({ hits }) {
 }
 
 async function loadMore(event) {
-    console.log(1)
+   
     loadBtnStatus.searching()
     newApi.increasePage()
     newApi.decreaseTotalImages()
@@ -109,6 +109,7 @@ function drawSearchResult(results){
 }
 
 function createGallery(data) {
+    console.log(data)
     refs.gallery.insertAdjacentHTML('beforeend', galleryTemplate(data))
     
 }
