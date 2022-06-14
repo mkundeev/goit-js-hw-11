@@ -109,7 +109,7 @@ function drawSearchResult(results){
 }
 
 function createGallery(data) {
-    console.log(data)
+   
     refs.gallery.insertAdjacentHTML('beforeend', galleryTemplate(data))
     
 }
